@@ -24,9 +24,10 @@ jobs:
       - name: Deploy to GCF
         run: |
           gcloud functions deploy verigood-ai-installer \
-            --runtime nodejs20 \
+            --runtime nodejs18 \
             --allow-unauthenticated \
             --trigger-http \
             --entry-point probotApp \
             --region asia-south1 \
+            --timeout=10s \
             --set-env-vars APP_ID="${{secrets.APP_ID}}",PRIVATE_KEY="${{secrets.PRIVATE_KEY}}",WEBHOOK_SECRET="${{secrets.WEBHOOK_SECRET}}"
