@@ -19,6 +19,8 @@ jobs:
           service_account_key: ${{ secrets.SERVICE_ACCOUNT_KEY }} # optional
           project_id: ${{ secrets.PROJECT_ID }} # optional
           export_default_credentials: true # optional
+      - name: GCP Config Setup
+        run: gcloud config set project ${{ secrets.PROJECT_ID }}
       - name: Deploy to GCF
         run: |
           gcloud functions deploy verigood-ai-installer \
