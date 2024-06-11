@@ -12,12 +12,12 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Set up Cloud SDK
-        uses: google-github-actions/setup-gcloud@master
+        uses: google-github-actions/setup-gcloud@main
         with:
           # probot/example-google-cloud-function credentials provided by @bcoe
           project_id: ${{ secrets.PROJECT_ID }}
-          service_account_key: ${{ secrets.SERVICE_ACCOUNT_KEY }}
-          export_default_credentials: true
+        #   service_account_key: ${{ secrets.SERVICE_ACCOUNT_KEY }}
+        #   export_default_credentials: true
       - name: Deploy to GCF
         run: |
           gcloud functions deploy verigood-ai-installer \
