@@ -1,0 +1,100 @@
+name: AI-Powered Formal Verification
+
+on:
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: 'The Git ref to verify'
+        required: true
+        default: 'main'
+
+permissions:
+  issues: write
+  contents: write
+
+jobs:
+  summarize-repo:
+    name: Summarize Repository
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Run Summarizer
+        uses: DigitalDefenseCompany/human-readable-spec-generator@main
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+
+      - name: Print Output
+        run: echo "Summary: ${{ steps.run-summarizer.outputs.summary }}"
+
+  generate-specs:
+    name: Generate Formal Specs
+    runs-on: ubuntu-latest
+    needs: summarize-repo
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Run Formal Spec Generator
+        uses: DigitalDefenseCompany/formal-spec-generator@main
+        with:
+          summary: ${{ needs.summarize-repo.outputs.summary }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+
+      - name: Configure Git
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+
+      - name: Commit and Push Changes
+        run: |
+          git add test/Halmos.t.sol
+          git commit -m 'Add generated formal specs'
+          git push
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Print Output
+        run: echo "File Path: ${{ steps.run-verification.outputs.file_path }}"
+
+  verify:
+    name: Run Formal Verification
+    runs-on: ubuntu-latest
+    needs: generate-specs
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Cache Docker layers
+        uses: actions/cache@v3
+        with:
+          path: /home/runner/.cache/docker
+          key: ${{ runner.os }}-docker-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-docker-
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Build and push Docker image
+        id: docker_build
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          push: false
+          tags: user/formal-verification-runner:latest
+
+      - name: Run Formal Verification Runner
+        uses: DigitalDefenseCompany/formal-verification-runner@main
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Print Output
+        run: echo "Verification Result: ${{ steps.run-verification.outputs.verification_result }}"
