@@ -20,6 +20,7 @@ jobs:
         #   export_default_credentials: true
       - name: Deploy to GCF
         run: |
+          gcloud config set project ${{ secrets.PROJECT_ID }}
           gcloud functions deploy verigood-ai-installer \
             --runtime nodejs20 \
             --allow-unauthenticated \
