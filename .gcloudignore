@@ -20,3 +20,5 @@ LICENSE
 CONTRIBUTING.md
 CODE_OF_CONDUCT.md
 README.md
+fixtures/
+deploy.md
