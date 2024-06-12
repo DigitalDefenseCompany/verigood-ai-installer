@@ -1,0 +1,13 @@
+{
+    "action": "opened",
+    "repository": {
+      "owner": {
+        "login": "probot"
+      },
+      "name": "example-google-cloud-function"
+    },
+    "issue": {
+      "number": 1
+    }
+  }
+  

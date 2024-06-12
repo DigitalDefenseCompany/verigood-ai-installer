@@ -15,3 +15,8 @@
 
 node_modules
 #!include:.gitignore
+test.js
+LICENSE
+CONTRIBUTING.md
+CODE_OF_CONDUCT.md
+README.md

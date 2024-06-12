@@ -1,48 +1,36 @@
-const { readFileSync } = require('fs');
-const { join } = require('path');
+const { readFileSync } = require("fs");
+const { join } = require("path");
 
 /**
  * @param {import('probot').Probot} app
  */
 module.exports = (app) => {
-  app.log("Yay! The app was loaded!");
-
-  // Log the value of __dirname
-  app.log.info(`__dirname: ${__dirname}`);
+  console.log("Yay! The app was loaded!");
 
   app.on("installation.created", async (context) => {
+    console.log("Handling installation.created event");
     const installationId = context.payload.installation.id;
-    const repositories = context.payload.repositories;
+    console.log(`Handling installation.created event for installation id: ${installationId}`);
 
-    for (const repo of repositories) {
-      const owner = repo.owner.login;
-      const repoName = repo.name;
+    // Simulate some work here
+    console.log("Fetching repositories...");
+    // Add more logging to ensure we reach this point
+    console.log("Installation created event processed successfully.");
+  });
 
-      const octokit = await app.auth(installationId);
+  app.on("installation_repositories.added", async (context) => {
+    console.log("Handling installation_repositories.added event");
+    const repositories = context.payload.repositories_added;
+    console.log(`Handling installation_repositories.added event for repositories: ${JSON.stringify(repositories)}`);
 
-      // Read the workflow file content
-      const workflowContent = readFileSync(join(__dirname, 'workflow-files/ai-powered-formal-verification.yml'), 'utf8');
-
-      // Create the workflow file in the repository
-      await octokit.repos.createOrUpdateFileContents({
-        owner,
-        repo: repoName,
-        path: '.github/workflows/ai-powered-formal-verification.yml',
-        message: 'Add AI-powered formal verification workflow',
-        content: Buffer.from(workflowContent).toString('base64'),
-        committer: {
-          name: 'github-actions[bot]',
-          email: 'github-actions[bot]@users.noreply.github.com',
-        },
-        author: {
-          name: 'github-actions[bot]',
-          email: 'github-actions[bot]@users.noreply.github.com',
-        },
-      });
-    }
+    // Simulate some work here
+    console.log("Adding repositories...");
+    // Add more logging to ensure we reach this point
+    console.log("Repositories added event processed successfully.");
   });
 
   app.on("issues.opened", async (context) => {
+    console.log("Handling issues.opened event");
     return context.octokit.issues.createComment(
       context.issue({ body: "Hello, World!" })
     );
