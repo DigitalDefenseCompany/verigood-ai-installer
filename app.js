@@ -34,7 +34,33 @@ module.exports = (app) => {
             .replace(/\n/g, "")}`
         );
 
-        // Create the workflow file in the repository
+        // Check if the file already exists
+        let sha = null;
+        try {
+          const { data: existingFile } = await octokit.repos.getContent({
+            owner,
+            repo: repoName,
+            path: ".github/workflows/ai-powered-formal-verification.yml",
+          });
+          sha = existingFile.sha;
+          console.log(`Existing file SHA: ${sha}`);
+        } catch (error) {
+          if (error.status === 404) {
+            console.log(
+              `File does not exist in ${owner}/${repoName}, creating a new one.`
+            );
+          } else {
+            console.error(
+              `Error checking if file exists in ${owner}/${repoName}: ${error.status} ${error.message}`
+            );
+            console.error(
+              `Error details: ${JSON.stringify(error.response.data)}`
+            );
+            continue;
+          }
+        }
+
+        // Create or update the workflow file in the repository
         try {
           const response = await octokit.repos.createOrUpdateFileContents({
             owner,
@@ -50,14 +76,15 @@ module.exports = (app) => {
               name: "github-actions[bot]",
               email: "github-actions[bot]@users.noreply.github.com",
             },
+            sha: sha,
           });
 
           console.log(
-            `Workflow file created in ${owner}/${repoName}: ${response.data.content.html_url}`
+            `Workflow file created or updated in ${owner}/${repoName}: ${response.data.content.html_url}`
           );
         } catch (error) {
           console.error(
-            `Error creating file in ${owner}/${repoName}: ${error.status} ${error.response.data.message}`
+            `Error creating or updating file in ${owner}/${repoName}: ${error.status} ${error.response.data.message}`
           );
           console.error(
             `Error details: ${JSON.stringify(error.response.data)}`
