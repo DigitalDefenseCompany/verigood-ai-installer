@@ -28,7 +28,7 @@ jobs:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
 
       - name: Print Output
-        run: echo "Summary: ${{ steps.run-summarizer.outputs.summary }}"
+        run: 'echo "Summary: ${{ steps.run-summarizer.outputs.summary }}"'
 
   generate-specs:
     name: Generate Formal Specs
@@ -61,7 +61,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Print Output
-        run: echo "File Path: ${{ steps.run-verification.outputs.file_path }}"
+        run: 'echo "File Path: ${{ steps.run-verification.outputs.file_path }}"'
 
   verify:
     name: Run Formal Verification
@@ -97,4 +97,4 @@ jobs:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Print Output
-        run: echo "Verification Result: ${{ steps.run-verification.outputs.verification_result }}"
+        run: 'echo "Verification Result: ${{ steps.run-verification.outputs.verification_result }}"'
