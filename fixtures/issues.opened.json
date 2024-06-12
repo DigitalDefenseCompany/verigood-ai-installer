@@ -2,9 +2,9 @@
     "action": "opened",
     "repository": {
       "owner": {
-        "login": "probot"
+        "login": "DigitalDefenseCompany"
       },
-      "name": "example-google-cloud-function"
+      "name": "verigood-ai-installer"
     },
     "issue": {
       "number": 1

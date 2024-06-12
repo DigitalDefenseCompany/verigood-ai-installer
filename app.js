@@ -18,40 +18,57 @@ module.exports = (app) => {
       console.log("Authenticated with GitHub API");
 
       for (const repo of repositories) {
-        const owner = repo.owner.login;
-        const repoName = repo.name;
+        const [owner, repoName] = repo.full_name.split("/");
         console.log(`Processing repository: ${owner}/${repoName}`);
 
         // Read the workflow file content
         const workflowPath = join(
           __dirname,
-          "workflows/ai-powered-formal-verification.yml"
+          "workflow-files/ai-powered-formal-verification.yml"
         );
         console.log(`Reading workflow file from: ${workflowPath}`);
         const workflowContent = readFileSync(workflowPath, "utf8");
-        console.log(`Workflow file content: ${workflowContent}`);
+        console.log(
+          `Workflow file content: ${workflowContent
+            .substring(0, 100)
+            .replace(/\n/g, "")}`
+        );
 
         // Create the workflow file in the repository
-        await octokit.repos.createOrUpdateFileContents({
-          owner,
-          repo: repoName,
-          path: ".github/workflows/ai-powered-formal-verification.yml",
-          message: "Add AI-powered formal verification workflow",
-          content: Buffer.from(workflowContent).toString("base64"),
-          committer: {
-            name: "github-actions[bot]",
-            email: "github-actions[bot]@users.noreply.github.com",
-          },
-          author: {
-            name: "github-actions[bot]",
-            email: "github-actions[bot]@users.noreply.github.com",
-          },
-        });
+        try {
+          const response = await octokit.repos.createOrUpdateFileContents({
+            owner,
+            repo: repoName,
+            path: ".github/workflows/ai-powered-formal-verification.yml",
+            message: "Add AI-powered formal verification workflow",
+            content: Buffer.from(workflowContent).toString("base64"),
+            committer: {
+              name: "github-actions[bot]",
+              email: "github-actions[bot]@users.noreply.github.com",
+            },
+            author: {
+              name: "github-actions[bot]",
+              email: "github-actions[bot]@users.noreply.github.com",
+            },
+          });
 
-        console.log(`Workflow file created in ${owner}/${repoName}`);
+          console.log(
+            `Workflow file created in ${owner}/${repoName}: ${response.data.content.html_url}`
+          );
+        } catch (error) {
+          console.error(
+            `Error creating file in ${owner}/${repoName}: ${error.status} ${error.response.data.message}`
+          );
+          console.error(
+            `Error details: ${JSON.stringify(error.response.data)}`
+          );
+        }
       }
     } catch (error) {
-      console.error(`Error processing repositories: ${error}`);
+      console.error(
+        `Error processing repositories: ${error.status} ${error.message}`
+      );
+      console.error(`Error details: ${JSON.stringify(error.response.data)}`);
     }
   };
 
@@ -79,7 +96,10 @@ module.exports = (app) => {
 
       await handleRepositories(context, repositories.repositories);
     } catch (error) {
-      console.error(`Error during installation.created event: ${error}`);
+      console.error(
+        `Error during installation.created event: ${error.status} ${error.message}`
+      );
+      console.error(`Error details: ${JSON.stringify(error.response.data)}`);
     }
   });
 

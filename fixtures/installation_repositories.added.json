@@ -1,15 +1,80 @@
 {
-    "installation": {
-      "id": 1
+  "action": "added",
+  "installation": {
+    "id": 51739775,
+    "account": {
+      "login": "DigitalDefenseCompany",
+      "id": 168008027,
+      "node_id": "O_kgDOCgOZWw",
+      "avatar_url": "https://avatars.githubusercontent.com/u/168008027?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/DigitalDefenseCompany",
+      "html_url": "https://github.com/DigitalDefenseCompany",
+      "followers_url": "https://api.github.com/users/DigitalDefenseCompany/followers",
+      "following_url": "https://api.github.com/users/DigitalDefenseCompany/following{/other_user}",
+      "gists_url": "https://api.github.com/users/DigitalDefenseCompany/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/DigitalDefenseCompany/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/DigitalDefenseCompany/subscriptions",
+      "organizations_url": "https://api.github.com/users/DigitalDefenseCompany/orgs",
+      "repos_url": "https://api.github.com/users/DigitalDefenseCompany/repos",
+      "events_url": "https://api.github.com/users/DigitalDefenseCompany/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/DigitalDefenseCompany/received_events",
+      "type": "Organization",
+      "site_admin": false
     },
-    "repositories_added": [
-      {
-        "id": 1,
-        "name": "example-repo",
-        "owner": {
-          "login": "example-owner"
-        }
-      }
-    ]
+    "repository_selection": "selected",
+    "access_tokens_url": "https://api.github.com/app/installations/51739775/access_tokens",
+    "repositories_url": "https://api.github.com/installation/repositories",
+    "html_url": "https://github.com/organizations/DigitalDefenseCompany/settings/installations/51739775",
+    "app_id": 918527,
+    "app_slug": "verigood-ai",
+    "target_id": 168008027,
+    "target_type": "Organization",
+    "permissions": {
+      "issues": "write",
+      "metadata": "read"
+    },
+    "events": [
+      "issues"
+    ],
+    "created_at": "2024-06-11T17:11:52.000+05:30",
+    "updated_at": "2024-06-12T05:25:09.000+05:30",
+    "single_file_name": null,
+    "has_multiple_single_files": false,
+    "single_file_paths": [],
+    "suspended_by": null,
+    "suspended_at": null
+  },
+  "repository_selection": "selected",
+  "repositories_added": [
+    {
+      "id": 813884741,
+      "node_id": "R_kgDOMILlRQ",
+      "name": "test-repo",
+      "full_name": "DigitalDefenseCompany/test-repo",
+      "private": true
+    }
+  ],
+  "repositories_removed": [],
+  "requester": null,
+  "sender": {
+    "login": "saurabhchalke",
+    "id": 17354920,
+    "node_id": "MDQ6VXNlcjE3MzU0OTIw",
+    "avatar_url": "https://avatars.githubusercontent.com/u/17354920?v=4",
+    "gravatar_id": "",
+    "url": "https://api.github.com/users/saurabhchalke",
+    "html_url": "https://github.com/saurabhchalke",
+    "followers_url": "https://api.github.com/users/saurabhchalke/followers",
+    "following_url": "https://api.github.com/users/saurabhchalke/following{/other_user}",
+    "gists_url": "https://api.github.com/users/saurabhchalke/gists{/gist_id}",
+    "starred_url": "https://api.github.com/users/saurabhchalke/starred{/owner}{/repo}",
+    "subscriptions_url": "https://api.github.com/users/saurabhchalke/subscriptions",
+    "organizations_url": "https://api.github.com/users/saurabhchalke/orgs",
+    "repos_url": "https://api.github.com/users/saurabhchalke/repos",
+    "events_url": "https://api.github.com/users/saurabhchalke/events{/privacy}",
+    "received_events_url": "https://api.github.com/users/saurabhchalke/received_events",
+    "type": "User",
+    "site_admin": false
   }
-  
+}
