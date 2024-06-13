@@ -57,8 +57,12 @@ jobs:
       - name: Commit and Push Changes
         run: |
           git add test/Halmos.t.sol
-          git commit -m 'Add generated formal specs'
-          git push
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m 'Add generated formal specs'
+            git push
+          fi
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
