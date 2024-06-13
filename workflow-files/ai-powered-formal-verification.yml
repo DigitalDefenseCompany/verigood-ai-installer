@@ -22,6 +22,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Run Summarizer
+        id: run-summarizer
         uses: DigitalDefenseCompany/human-readable-spec-generator@main
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -40,6 +41,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Run Formal Spec Generator
+        id: generate-formal-specs
         uses: DigitalDefenseCompany/formal-spec-generator@main
         with:
           summary: ${{ needs.summarize-repo.outputs.summary }}
@@ -61,7 +63,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Print Output
-        run: 'echo "File Path: ${{ steps.run-verification.outputs.file_path }}"'
+        run: 'echo "File Path: ${{ steps.generate-formal-specs.outputs.file_path }}"'
 
   verify:
     name: Run Formal Verification
@@ -92,6 +94,7 @@ jobs:
           tags: user/formal-verification-runner:latest
 
       - name: Run Formal Verification Runner
+        id: run-verification
         uses: DigitalDefenseCompany/formal-verification-runner@main
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
